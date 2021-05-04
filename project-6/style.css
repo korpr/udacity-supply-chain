@@ -52,6 +52,7 @@ button {
   padding:30px;
   border-radius: 4px;
   background-color: #f8f8f8;
+  min-height: 500px;
 }
 
 .form-break {
@@ -63,4 +64,13 @@ button {
 
 .horizontal-rule {
   background-color:#BDBDBD;
+}
+
+.request-result{
+  float: right;
+  width: 40%;
+}
+.request-result:after {
+  content: "";
+  clear: both;
 }

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "./Roles.sol";
 import "./../coffeecore/Ownable.sol";
 
-abstract contract BaseRole is Ownable{
+abstract contract BaseRole is Ownable {
     using Roles for Roles.Role;
 
     event MemberAdded(address indexed account, string roleName);
@@ -12,6 +12,7 @@ abstract contract BaseRole is Ownable{
 
     string private roleName;
     Roles.Role private members;
+
     constructor(string memory _roleName) {
         roleName = _roleName;
         _add(msg.sender);
@@ -22,12 +23,10 @@ abstract contract BaseRole is Ownable{
         _;
     }
 
-
     function isInRole(address account) public view returns (bool) {
         return members.has(account);
     }
 
-    
     function add(address account) public onlyOwner {
         _add(account);
     }
@@ -46,11 +45,9 @@ abstract contract BaseRole is Ownable{
         emit MemberRemoved(account, roleName);
     }
 
-    function getRoleName() public view returns (string memory){
+    function getRoleName() public view returns (string memory) {
         return roleName;
     }
 
-    fallback () external {
-        
-    }
+    fallback() external {}
 }

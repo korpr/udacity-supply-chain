@@ -93,8 +93,17 @@ contract('SupplyChain', function (accounts) {
         const supplyChain = await SupplyChain.deployed();
         await truffleAssert.reverts(
             supplyChain.harvestItem(
-                upc, distributorID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes,
-                {from: distributorID})
+                upc + 1, distributorID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes,
+                { from: distributorID })
+        );
+    })
+
+    it("Testing smart contract function harvestItem() - add exist item", async () => {
+        const supplyChain = await SupplyChain.deployed();
+        await truffleAssert.reverts(
+            supplyChain.harvestItem(
+                upc, distributorID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes),
+                'this item has been added earlier'
         );
     })
     // 2nd Test
@@ -110,7 +119,6 @@ contract('SupplyChain', function (accounts) {
 
 
         assert.equal(resultBufferOne[0], sku, 'Error: Invalid item SKU');
-        assert.equal(resultBufferOne[1], upc, 'Error: Invalid item UPC');
         assert.equal(resultBufferOne[3], originFarmerID, 'Error: Missing or Invalid ownerID');
         assert.equal(resultBufferTwo[5], 1, 'Error: Invalid item State');
     })
@@ -180,7 +188,7 @@ contract('SupplyChain', function (accounts) {
     })
     // 4.1 Test
     it("Testing smart contract function sellItem() - call this method from stranger account", async () => {
-        let testUpc = upc + 31;
+        let testUpc = upc + 41;
         const supplyChain = await SupplyChain.deployed();
         await supplyChain.harvestItem(
             testUpc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes);
@@ -189,7 +197,7 @@ contract('SupplyChain', function (accounts) {
         await truffleAssert.reverts(supplyChain.sellItem(testUpc, 555, { from: accounts[4] }));
     })
 
-    // 4. 2Test
+    // 4.2 Test
     it("Testing smart contract function sellItem() - wrong item", async () => {
         const supplyChain = await SupplyChain.deployed();
         await truffleAssert.reverts(supplyChain.sellItem(upc, 555));

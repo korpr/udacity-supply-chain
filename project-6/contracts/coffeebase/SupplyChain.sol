@@ -193,6 +193,8 @@ contract SupplyChain is Ownable {
         string memory _productNotes
     ) public onlyFarmer() {
         // Add the new item as part of Harvest
+        require(items[_upc].sku == 0, "this item has been added earlier");
+
         Item memory item;
         item.sku = sku;
         item.upc = _upc;
